@@ -3,10 +3,10 @@ Course explores the concepts and algorithms at the foundation of modern artifici
 
 ## [Project 0](https://cs50.harvard.edu/ai/projects/0/)
 
-* Degrees: Program that determines how many “degrees of separation” apart two actors are.
-* TicTacToe: Using Minimax, an AI to play Tic-Tac-Toe optimally.
+* **Degrees**: Program that determines how many “degrees of separation” apart two actors are.
+* **TicTacToe**: Using Minimax, an AI to play Tic-Tac-Toe optimally.
 
 ## [Project 1](https://cs50.harvard.edu/ai/projects/0/)
 
-* Knights: Program to solve logic puzzles.
-* Minesweeper: An AI to play Minesweeper.
+* **Knights**: Program to solve logic puzzles.
+* **Minesweeper**: An AI to play Minesweeper.
