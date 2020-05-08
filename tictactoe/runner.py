@@ -90,6 +90,8 @@ while True:
             tiles.append(row)
 
         game_over = ttt.terminal(board)
+        if ttt.winner(board) is not None:
+            game_over = True
         player = ttt.player(board)
 
         # Show title
