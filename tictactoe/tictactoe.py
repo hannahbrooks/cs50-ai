@@ -57,8 +57,8 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    # if action not in actions(board):
-    #     raise Exception
+    if action not in actions(board):
+        raise Exception
 
     board_copy = deepcopy(board)
     board_copy[action[0]][action[1]] = player(board_copy)
@@ -97,12 +97,10 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    for i in board:
-        for j in i:
-            if j == EMPTY:
-                return False
-
-    return True
+    if winner(board) is not None or not actions(board):
+        return True
+    else:
+        return False
 
 
 def utility(board):
@@ -123,79 +121,49 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    best_x = float('-inf')
-    best_o = best = float('inf')
-    move = tuple()
-
     if terminal(board):
         return None
+    elif board == initial_state():
+        return 0, 1
     else:
         curr_player = player(board)
-        board_copy = deepcopy(board)
+        best_value = float("-inf") if curr_player == X else float("inf")
 
-        if curr_player == X:
-            for i in range(3):
-                for j in range(3):
-                    if board_copy[i][j] == EMPTY:
-                        board_copy[i][j] = X
-                        move = tuple()
-                        move = move + (i, j)
+        for action in actions(board):
+            new = perform_minimax(result(deepcopy(board), action), best_value)
 
-                        val = perform_minimax(board_copy, 0, True)
+            if curr_player == X:
+                new = max(best_value, new)
+            elif curr_player == O:
+                new = min(best_value, new)
 
-                        if best_x > val:
-                            best_x = val
-                            move = tuple()
-                            move = move + (i, j)                           
+            if new != best_value:
+                best_value = new
+                move = action
 
-        elif curr_player == O:
-            for i in range(3):
-                for j in range(3):
-                    if board_copy[i][j] == EMPTY:
-                        board_copy[i][j] = O
-                        move = tuple()
-                        move = move + (i, j)
+        return move
+ 
 
-                        val = perform_minimax(board_copy, 0, False)
-
-                        if best_o < val:
-                            best_o = val
-                            move = tuple()
-                            move = move + (i, j)
-
-    return move
-
-
-def perform_minimax(board, depth, is_maximizing):
+def perform_minimax(board, best_value):
     if terminal(board):
         return utility(board)
-
-    if is_maximizing:
-        best = float('-inf')
-        curr_actions = actions(board)
-
-        for action in curr_actions:
-            curr_result = result(board, action)
-            val = perform_minimax(curr_result, depth + 1, False)
-            best = max(val, best)
-
-        return best
     else:
-        best = float('inf')
-        curr_actions = actions(board)
+        curr_player = player(board)
+        value = float("-inf") if curr_player == X else float("inf")
 
-        for action in curr_actions:
-            curr_result = result(board, action)
-            val = perform_minimax(curr_result, depth + 1, True)
-            best = min(val, best)
+        for action in actions(board):
+            new = perform_minimax(result(board, action), value)
 
-        return best
+            if curr_player == X:
+                if new > best_value:
+                    return new
+                value = max(value, new)
+            elif curr_player == O:
+                if new < best_value:
+                    return new
+                value = min(value, new)
 
-def print_board(board):
-    for i in board:
-        for j in i:
-            print("value of j: " + str(j))
-
+        return value
 
 
 
